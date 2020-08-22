@@ -9,19 +9,6 @@
 			Submit a paper
 		</legend>
 
-		<div class="alert" style="margin-top: 1em;">
-			Manuscripts must be <u>PDF files</u> and 
-				    <span class="wide-popover"><u>
-					<%= link_to 'fully anonymized.',
-								'#',
-								class: 'popover-link wide-popover',
-								placement: 'left',
-								'data-trigger' => 'hover', 
-								'data-content' => "#{render 'anonymization_instructions'}" %>
-			        </u></span>
-			</ul>
-		</div>
-		
 		<%= form_for @submission, 
 								 url: { controller: :author_center, action: :create }, 
 								 html: { multipart: true, class: "form-horizontal" } do |f| %>
@@ -44,12 +31,51 @@
 				</div>
 				
 				<div class="control-group">
+		      <%= f.label :donor_code, "Donor Number", class: "control-label"  %>
+					<div class="controls">
+						<%= f.text_field :donor_code %>
+					</div>
+				</div>
+				
+				<div class="alert" style="margin-top: 1em;">
+								Ergo now operates with a standard submission fee of $20 to cover increasing copy-editing, type-setting and hosting costs. 
+								To pay this fee, please make a $20 donation to the <a href="https://secure.syr.edu/s/1632/17/form/form.aspx?sid=1632&gid=2&pgid=2292&cid=4508&sort=1&bledit=1&dids=179" target="_blank">Syracuse Philosophy Department fund</a> and note the 'Confirmation Number' in your donation confirmation email.
+								Enter this number in the 'Donor Number' field above. 
+								For those who would like to claim exemption on one of the
+				<span class="wide-popover"><u>
+					<%= link_to 'permissible grounds,',
+								'#',
+								class: 'popover-link wide-popover',
+								placement: 'left',
+								'data-trigger' => 'hover', 
+								'data-content' => "#{render 'permissible_grounds'}" %></u></span>
+								please alternatively state your justification for claiming this exemption in the same field. 
+								Thank you for supporting Ergo.
+				</ul>
+				</div>
+
+				<div class="control-group">
 		      <%= f.label :manuscript_file, "PDF File", class: "control-label"  %>
 					<div class="controls">
 						<%= f.file_field :manuscript_file, accept: "application/pdf" %>
 					</div>
 				</div>
+
 				
+		<div class="alert" style="margin-top: 1em;">
+			Manuscripts must be <u>PDF files</u> and 
+				    <span class="wide-popover"><u>
+					<%= link_to 'fully anonymized.',
+								'#',
+								class: 'popover-link wide-popover',
+								placement: 'left',
+								'data-trigger' => 'hover', 
+								'data-content' => "#{render 'anonymization_instructions'}" %>
+			        </u></span>
+			</ul>
+		</div>
+		
+
 				<div class="control-group">
 					<div class="controls">
 						<%= f.submit "Submit", class: "btn btn-primary" %>

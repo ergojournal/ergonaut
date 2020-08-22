@@ -50,6 +50,7 @@ class Submission < ActiveRecord::Base
   validates :title, presence: true, length: { minimum: 1 }
   validates :user, presence: true
   validates :area, presence: true
+  validates :donor_code, presence: true, length: { maximum: 100 }
   validates :revision_number, presence: true, numericality: true #, uniqueness: { scope: :original_id }
   validates :manuscript_file, presence: true, on: :create # why only on create?
   validate :manuscript_file_size

@@ -47,6 +47,8 @@ describe Submission do
   it { should respond_to(:revisions) }
   it { should respond_to(:auth_token) }
   it { should respond_to(:decision_entered_at) }
+  it { should respond_to(:donor_code) }
+  # it { should respond_to(:donor_excuse) }
   it { should be_valid }
   
   
@@ -80,7 +82,7 @@ describe Submission do
     submission.area = nil
     expect(submission).not_to be_valid
   end
-  
+    
   it "is not valid without a revision_number" do
     submission.revision_number = nil
     expect(submission).not_to be_valid

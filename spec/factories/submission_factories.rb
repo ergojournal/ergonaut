@@ -5,6 +5,7 @@ FactoryGirl.define do
     author
     manuscript_file   { Rack::Test::UploadedFile.new(File.join(Rails.root, 'spec', 'support', 'Sample Submission.pdf')) }
     area
+    donor_code
 
     factory :submission_sent_for_review_without_area_editor do
       before(:create) do |submission|

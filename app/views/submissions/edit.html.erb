@@ -34,6 +34,12 @@
 			<%= "Area: #{@submission.area.name}" %>
 		</h6>
 
+		<% if current_user.managing_editor? %>
+			<h6 class="center">
+				Donor code: <%= @submission.donor_code %>
+			</h6>
+		<% end %>
+
 		<% if area_editor? %>
 		<div class="center">
 			<%= link_to fa_icon('compass', style: 'font-size: 1.2em;'), guide_path %>
