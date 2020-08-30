@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20200821193007) do
+ActiveRecord::Schema.define(:version => 20200830220820) do
 
   create_table "area_editor_assignments", :force => true do |t|
     t.integer  "user_id"
@@ -107,6 +107,10 @@ ActiveRecord::Schema.define(:version => 20200821193007) do
     t.string   "auth_token"
     t.datetime "decision_entered_at"
     t.string   "donor_code"
+    t.boolean  "waiver"
+    t.string   "waiver_type"
+    t.string   "subscriber"
+    t.boolean  "fee_system"
   end
 
   add_index "submissions", ["area_id"], :name => "index_submissions_on_area_id"

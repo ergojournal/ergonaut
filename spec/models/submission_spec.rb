@@ -48,7 +48,9 @@ describe Submission do
   it { should respond_to(:auth_token) }
   it { should respond_to(:decision_entered_at) }
   it { should respond_to(:donor_code) }
-  # it { should respond_to(:donor_excuse) }
+  it { should respond_to(:waiver) }
+  it { should respond_to(:waiver_type) }
+  it { should respond_to(:subscriber) }
   it { should be_valid }
   
   

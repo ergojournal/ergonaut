@@ -9,7 +9,7 @@ class AuthorCenterController < ApplicationController
   end
   
   def create
-    @submission = Submission.new(params[:submission].permit(:title, :donor_code, :area_id, :manuscript_file))
+    @submission = Submission.new(params[:submission].permit(:title, :donor_code, :waiver, :waiver_type, :subscriber, :fee_system, :area_id, :manuscript_file))
     @submission.author = current_user
     @submission.decision = Decision::NO_DECISION
     @submission.revision_number = 0

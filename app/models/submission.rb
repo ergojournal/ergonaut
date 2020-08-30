@@ -4,6 +4,10 @@
 #
 #  id                                        :integer          not null, primary key
 #  title                                     :string(255)
+#  donor_code                                :string(255)
+#  waiver_type                               :string(255)
+#  subscriber                                :string(255)
+#  fee_system                                :boolean
 #  user_id                                   :integer
 #  created_at                                :datetime         not null
 #  updated_at                                :datetime         not null
@@ -50,7 +54,8 @@ class Submission < ActiveRecord::Base
   validates :title, presence: true, length: { minimum: 1 }
   validates :user, presence: true
   validates :area, presence: true
-  validates :donor_code, presence: true, length: { maximum: 100 }
+  validates :donor_code, presence: true, unless: -> { waiver || !fee_system }
+  validates :waiver_type, presence: true, if: -> { waiver }
   validates :revision_number, presence: true, numericality: true #, uniqueness: { scope: :original_id }
   validates :manuscript_file, presence: true, on: :create # why only on create?
   validate :manuscript_file_size
@@ -59,7 +64,7 @@ class Submission < ActiveRecord::Base
     record.errors[:base] = "That's an impossible decision!" unless Decision.all.include? value 
   end
   
-  
+
   # updaters
 
   def withdraw
