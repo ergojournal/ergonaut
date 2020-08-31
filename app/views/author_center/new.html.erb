@@ -37,7 +37,7 @@
  								Enter this number in the 'Donor Number' field below. 
  								For those who would like to claim a fee waiver on one of the 
 				<span class="wide-popover"><u>
-					<%= link_to 'permissible grounds,',
+					<%= link_to 'permissible grounds',
 								'#',
 								class: 'popover-link wide-popover',
 								placement: 'left',
@@ -62,9 +62,11 @@
 				<div id="waiver_grounds" class="control-group" style="display:none;">
 					<div class="controls">
 						<%= f.radio_button :waiver_type, 'Financial hardship', :disabled => true %>
-						  <%= label :waiver_type, 'Financial hardship', :value => 'Financial hardship' %>
+						  <%= label :waiver_type, 'Financial hardship', :value => 'Financial hardship', :style => "display:inline-block;padding-top:5px;padding-bottom:5px" %>
+						  </div>
+						  <div class="controls">
 						<%= f.radio_button :waiver_type, 'Member of subscribing department', :disabled => true %>
-						  <%= label :waiver_type, 'Member of subscribing department', :value => 'Member of subscribing department' %>
+						  <%= label :waiver_type, 'Member of subscribing department', :value => 'Member of subscribing department', :style => "display:inline-block;padding-top:5px;padding-bottom:5px" %>
 					</div>
 					<div id="institutions" class="controls" style="display:none;">
 						<%= f.select :subscriber, ['Murdoch University', 'Syracuse University', 'University of Birmingham', 'University of Oxford', 'University of Western Australia'], {}, {:disabled => true} %>
