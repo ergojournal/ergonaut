@@ -28,6 +28,22 @@
 			<%= "Area: #{@submission.area.name}" %>
 		</h6>
 
+		<% if current_user.managing_editor? %>
+			<h6 class="center">
+				<% if @submission.fee_system %>
+					<% unless @submission.waiver %>
+					Donor code: <%= @submission.donor_code %>
+					<% end %>
+				<% end %>
+				<% if @submission.waiver %>
+					Waiver: <%= @submission.waiver_type %>
+				<% end %>
+				<% if @submission.subscriber.present? %>
+				 - <%= @submission.subscriber %>.
+				<% end %>
+			</h6>
+		<% end %>
+		
 		<div class="legend-sans-rule">
 			Internal review
 			<span class="pull-right">
