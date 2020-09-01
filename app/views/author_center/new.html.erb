@@ -53,26 +53,27 @@
 					</div>
 				</div>
 				
-				<div class="control_group">
+				<div class="control_group" style="padding-bottom:10px">
 					<%= f.label :waiver, "Request fee waiver", class: "control-label" %>
-						<div class="controls">
-							<%= f.check_box :waiver %>
-						</div>
-				</div>
-				<div id="waiver_grounds" class="control-group" style="display:none;">
-					<div class="controls">
-						<%= f.radio_button :waiver_type, 'Financial hardship', :disabled => true %>
-						  <%= label :waiver_type, 'Financial hardship', :value => 'Financial hardship', :style => "display:inline-block;padding-top:5px;padding-bottom:5px" %>
-						  </div>
-						  <div class="controls">
-						<%= f.radio_button :waiver_type, 'Member of subscribing department', :disabled => true %>
-						  <%= label :waiver_type, 'Member of subscribing department', :value => 'Member of subscribing department', :style => "display:inline-block;padding-top:5px;padding-bottom:5px" %>
-					</div>
-					<div id="institutions" class="controls" style="display:none;">
-						<%= f.select :subscriber, ['Murdoch University', 'Syracuse University', 'University of Birmingham', 'University of Oxford', 'University of Western Australia'], {}, {:disabled => true} %>
+					<div class="controls" style="padding-top:3px">
+						<%= f.check_box :waiver %>
 					</div>
 				</div>
 				
+				<div id="waiver_grounds" class="control-group" style="display:none">
+					<div class="controls">
+						<%= f.radio_button :waiver_type, 'Financial hardship', :disabled => true %>
+					  <%= label :waiver_type, 'Financial hardship', :value => 'Financial hardship', class: "radio inline" %>
+					 </div>
+					 <div class="controls" style="margin-top: 5px">
+						<%= f.radio_button :waiver_type, 'Member of subscribing department', :disabled => true %>
+					  <%= label :waiver_type, 'Member of subscribing department', :value => 'Member of subscribing department', class: "radio inline" %>
+					 </div>
+					 <div id="institutions" class="controls" style="display:none; padding-left:36px; margin-top: 5px">
+						<%= f.select :subscriber, ['Murdoch University', 'Syracuse University', 'University of Birmingham', 'University of Oxford', 'University of Western Australia'], {}, {:disabled => true} %>
+					 </div>
+					</div>
+
 				<script>
 					$( document ).ready(function() {
 							var waiverinit = $("#submission_waiver").prop('checked')
@@ -80,8 +81,7 @@
 								$("#submission_waiver").prop('checked', false)
 								$("#submission_waiver_type_member_of_subscribing_department").prop('checked', false)
 							}
-							
-						$("#submission_waiver").click(function() {
+							$("#submission_waiver").click(function() {
 							var waivered = $("#submission_waiver").prop('checked')
 							if(waivered) {
 								$("#submission_donor_code").prop('disabled', true)
