@@ -1,0 +1,30 @@
+<% content_for :open_graph do %>
+  <%= tag :meta, property: "og:site_name", content: "ErgoSubmissions.org" %>
+  <%= tag :meta, property: "og:type", content: "website" %>
+  <%= tag :meta, property: "og:title", content: "Subscriptions" %>
+  <%= tag :meta, property: "og:url", content: subscribe_url %>
+  <%= tag :meta, property: "og:image", content: request.protocol +
+																								request.host_with_port +
+																								image_path('E600.png') %>
+<% end %>
+
+<div class="row">
+	<div class="offset2 span8" style="text-align: justify;">
+		
+		<h1>Supporting Ergo</h1>
+		<br/>
+		
+		<p>You can <a href="https://secure.syr.edu/s/1632/17/form/form.aspx?sid=1632&gid=2&pgid=2292&cid=4508&sort=1&bledit=1&dids=179">donate here</a> to support Ergo's operations; on the 'Your Information' page, please click 'Comments and Gift Instructions' and enter 'Ergo' into the 'Additional Instructions for your Donation' field.
+		</p>
+		<p>We offer a waiver of the submission fee to members of institutions who pay an annual subscription. 
+			 This subscription is currently $200 for institutions with a PhD program and $100 for other institutions. 
+			 To pay the subscription, visit <a href="https://secure.syr.edu/s/1632/17/form/form.aspx?sid=1632&gid=2&pgid=2292&cid=4508&sort=1&bledit=1&dids=179">the Syracuse Philosophy donation site</a> and make the respective donation. 
+			 On the 'Your Information' page, please click 'Comments and Gift Instructions' and enter 'Ergo' into the 'Additional Instructions for your Donation' field. 
+			 Once you have made the donation, please confirm by email to <%= mail_to @email %>, including the 'Confirmation number' from your donation confirmation email.</p>
+			</div>
+		</div>
+		
+		<div class="center">Queries? <%= mail_to @email %></div>
+		
+	</div>
+</div>

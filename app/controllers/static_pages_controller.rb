@@ -20,6 +20,10 @@ class StaticPagesController < ApplicationController
   def peer_review
   end
 
+  def subscribe
+    @email = JournalSettings.journal_email
+  end
+  
   def contact
     @email = JournalSettings.journal_email
   end

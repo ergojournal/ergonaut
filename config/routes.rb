@@ -128,6 +128,7 @@ Ergonaut::Application.routes.draw do
   match '/guide',           to: 'static_pages#guide'
   match '/about',           to: 'static_pages#about'
   match '/peer_review',     to: 'static_pages#peer_review'
+  match '/subscribe',       to: 'static_pages#subscribe'
   match '/contact',         to: 'static_pages#contact'
   match '/security_breach', to: 'static_pages#security_breach'
   match '/signup',          to: 'users#new'

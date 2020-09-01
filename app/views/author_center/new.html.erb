@@ -34,7 +34,7 @@
 								Ergo now operates with a standard submission fee of $20. 
 								Due to the costs of copy-editing, type-setting and journal hosting, Ergo cannot continue operations without revenue derived from this fee. 
 								To pay, please make a $20 donation to the <a href="https://secure.syr.edu/s/1632/17/form/form.aspx?sid=1632&gid=2&pgid=2292&cid=4508&sort=1&bledit=1&dids=179" target="_blank">Syracuse Philosophy Department fund</a> and note the 'Confirmation Number', beginning PAYID-, in your donation confirmation email. 
- 								Enter this number in the 'Donor Number' field below. 
+ 								Enter this number into the 'Donor Number' field below. 
  								For those who would like to claim a fee waiver on one of the 
 				<span class="wide-popover"><u>
 					<%= link_to 'permissible grounds',
@@ -42,7 +42,9 @@
 								class: 'popover-link wide-popover',
 								placement: 'left',
 								'data-trigger' => 'hover', 
-								'data-content' => "#{render 'permissible_grounds'}" %></u></span>, please check the box and select the grounds for the waiver. Thank you for supporting Ergo.
+								'data-content' => "#{render 'permissible_grounds'}" %></u></span>, please check the box and select the grounds for the waiver. 
+								To obtain a fee waiver for your institution, see our <%= link_to "subscriptions", subscribe_path %> page. 
+								Thank you for supporting Ergo.
 				</ul>
 				</div>
 				
@@ -66,8 +68,8 @@
 					  <%= label :waiver_type, 'Financial hardship', :value => 'Financial hardship', class: "radio inline" %>
 					 </div>
 					 <div class="controls" style="margin-top: 5px">
-						<%= f.radio_button :waiver_type, 'Member of subscribing department', :disabled => true %>
-					  <%= label :waiver_type, 'Member of subscribing department', :value => 'Member of subscribing department', class: "radio inline" %>
+						<%= f.radio_button :waiver_type, 'Institutional subscription', :disabled => true %>
+					  <%= label :waiver_type, 'Institutional subscription', :value => 'Institutional subscription', class: "radio inline" %>
 					 </div>
 					 <div id="institutions" class="controls" style="display:none; padding-left:36px; margin-top: 5px">
 						<%= f.select :subscriber, ['Murdoch University', 'Syracuse University', 'University of Birmingham', 'University of Oxford', 'University of Western Australia'], {}, {:disabled => true} %>
@@ -79,25 +81,25 @@
 							var waiverinit = $("#submission_waiver").prop('checked')
 							if (waiverinit) {
 								$("#submission_waiver").prop('checked', false)
-								$("#submission_waiver_type_member_of_subscribing_department").prop('checked', false)
+								$("#submission_waiver_type_institutional_subscription").prop('checked', false)
 							}
 							$("#submission_waiver").click(function() {
 							var waivered = $("#submission_waiver").prop('checked')
 							if(waivered) {
 								$("#submission_donor_code").prop('disabled', true)
-								$("#submission_waiver_type_member_of_subscribing_department").removeAttr("disabled")
+								$("#submission_waiver_type_institutional_subscription").removeAttr("disabled")
 								$("#submission_waiver_type_financial_hardship").removeAttr("disabled")
 								$("#waiver_grounds").show()
 							} 
 							else {
 								$("#submission_donor_code").removeAttr("disabled")
-								$("#submission_waiver_type_member_of_subscribing_department").prop('disabled', true)
+								$("#submission_waiver_type_institutional_subscription").prop('disabled', true)
 								$("#submission_waiver_type_financial_hardship").prop('disabled', true)
 								$("#waiver_grounds").hide()
 							}
 						});
 						$("#waiver_grounds").click(function() {
-							var subscribed = $("#submission_waiver_type_member_of_subscribing_department").prop('checked')
+							var subscribed = $("#submission_waiver_type_institutional_subscription").prop('checked')
 							if(subscribed) {
 								$("#institutions").show()
 								$("#submission_subscriber").removeAttr("disabled")

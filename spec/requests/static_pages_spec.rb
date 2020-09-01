@@ -103,6 +103,12 @@ describe "Static pages" do
     it { should have_content('Peer Review') }
   end
 
+  describe "About Page" do
+    before { visit subscribe_path }
+    subject { page }
+    it { should have_content('Subscribe') }
+  end
+
   describe "Contact Page" do
     before { visit contact_path }
     subject { page }
