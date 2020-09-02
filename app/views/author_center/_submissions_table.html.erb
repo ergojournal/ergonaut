@@ -25,10 +25,10 @@
 				<div class="center">
 					<% unless s.archived %>
 					<%= link_to "Withdraw",
-											"#warningModal",
+											"#warningModal-#{ s.id.to_s }",
 											class: 'btn btn-danger btn-mini',
 											"data-toggle" => "modal" %>
-					<div id="warningModal" class="modal hide fade">
+					<div id="warningModal-<%= s.id.to_s %>" class="modal hide fade">
 					  <div class="modal-header">
 					    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					    <h3>Stop!</h3>
