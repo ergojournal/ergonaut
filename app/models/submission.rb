@@ -54,7 +54,7 @@ class Submission < ActiveRecord::Base
   validates :title, presence: true, length: { minimum: 1 }
   validates :user, presence: true
   validates :area, presence: true
-  validates :donor_code, presence: true, format: { with: /^PAYID-/, message:" must be PAYID-XXXXXXXXXXXXXXXXXXXXXXXX" }, unless: -> { waiver || !fee_system }
+  validates :donor_code, presence: true, unless: -> { waiver || !fee_system } # format: { with: /^PAYID-/, message:" must be PAYID-XXXXXXXXXXXXXXXXXXXXXXXX" },
   validates :waiver_type, presence: true, if: -> { waiver }
   validates :revision_number, presence: true, numericality: true #, uniqueness: { scope: :original_id }
   validates :manuscript_file, presence: true, on: :create # why only on create?
