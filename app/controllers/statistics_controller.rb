@@ -126,7 +126,7 @@ class StatisticsController < ApplicationController
 
     @genders_hash = { 'Male' => male_authors,
                       'Female' => female_authors,
-                      'Unknown' => unknown_gender_authors }
+                      'Other/Unknown' => unknown_gender_authors }
   end
 
 
