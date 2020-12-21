@@ -1,7 +1,7 @@
-Dear Managing Editors (cc <%= @submission.author.full_name %>),
+Dear <%= @submission.author.full_name %> (cc Ergo Managing Editors),
 
-A new manuscript has been submitted to Ergo: submission #<%= @submission.id %>, "<%= @submission.title %>".
+Your manuscript "<%= @submission.title %>" has been successfully submitted to Ergo. It is submission #<%= @submission.id %>.
 
-Please log in and assign an area editor within <%= JournalSettings.days_to_assign_area_editor %> <%= 'day'.pluralize(JournalSettings.days_to_assign_area_editor) %>.
+The next step is for the Managing Editors to assign an Area Editor who will see your manuscript through the review process. Further details may be found in our <%= link_to "Peer Review Policy", peer_review_path %>.
 
 <%= render 'email_footer' %>
