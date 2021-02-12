@@ -85,6 +85,6 @@ end
 Ergonaut::Application.config.middleware.use ExceptionNotification::Rack,
   email: {
     email_prefix: "[EXCEPTION] ",
-    sender_address: %{"Exception Notification Gem" <jonathan.weisberg@utoronto.ca>},
-    exception_recipients: %w{jonathan.weisberg@utoronto.ca}
+    sender_address: %{"Exception Notification Gem" <a.j.wilson@bham.ac.uk>},
+    exception_recipients: %w{a.j.wilson@bham.ac.uk}
   }
