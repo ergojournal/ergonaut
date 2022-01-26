@@ -80,13 +80,5 @@
 								}
 	%><br/>
 <% end %>
-#
-#<%= pie_chart @genders_hash,
-#							library: {
-#								title: 'Submissions by author gender',
-#								colors: ['Red', 'Blue', 'LightGray'],
-#								is3D: true
-#							}
-#%><br/>
 
 <%= column_chart @areas_hash, library: { title: 'Submissions by area' } %>
