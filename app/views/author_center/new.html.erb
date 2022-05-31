@@ -15,7 +15,7 @@
 			<%= render 'shared/error_messages', object: f.object %>
 				
 			<fieldset>
-					<%= f.hidden_field :fee_system, value: "1" %>
+					<%= f.hidden_field :fee_system, value: "0" %>
 				<div class="control-group">
 		      <%= f.label :title, "Title", class: "control-label"  %>
 					<div class="controls">
@@ -29,90 +29,7 @@
 						<%= f.collection_select :area_id, @areas, :id, :name %>
 					</div>
 				</div>
-				
-				<div class="alert" style="margin-top: 1em;">
-								Because Ergo derives no income from selling access to its content, the editors ask that submissions be accompanied by a donation of $20.00 to help defray costs. 
-								A donation will have no impact on whether or not your article is published. 
-								Due to the costs of copy-editing, type-setting and journal hosting, Ergo cannot continue operations without revenue derived from these donations. 
-								When submitting, please make a $20 donation to the <a href="https://secure.syr.edu/s/1632/17/form/form.aspx?sid=1632&gid=2&pgid=2292&cid=4508&sort=1&bledit=1&dids=3204" target="_blank">Ergo fund at Syracuse University</a> and note the 'Confirmation Number' in your donation confirmation email. 
- 								Enter this number into the 'Donor Number' field below. 
- 								For those who would like to claim a donation waiver on one of the 
-				<span class="wide-popover"><u>
-					<%= link_to 'permissible grounds',
-								'#',
-								class: 'popover-link wide-popover',
-								placement: 'left',
-								'data-trigger' => 'hover', 
-								'data-content' => "#{render 'permissible_grounds'}" %></u></span>, please check the box and select the grounds for the waiver. 
-								To obtain a donation waiver for your institution, see our <%= link_to "subscriptions", subscribe_path %> page. 
-								Thank you for supporting Ergo.
-				</ul>
-				</div>
-				
-				<div id="code_entry" class="control-group">
-		      <%= f.label :donor_code, "Donor Number", class: "control-label" %>
-					<div class="controls">
-						<%= f.text_field :donor_code %>
-					</div>
-				</div>
-				
-				<div class="control_group" style="padding-bottom:10px">
-					<%= f.label :waiver, "Request donation waiver", class: "control-label" %>
-					<div class="controls" style="padding-top:3px">
-						<%= f.check_box :waiver %>
-					</div>
-				</div>
-				
-				<div id="waiver_grounds" class="control-group" style="display:none">
-					<div class="controls">
-						<%= f.radio_button :waiver_type, 'Financial hardship', :disabled => true %>
-					  <%= label :waiver_type, 'Financial hardship', :value => 'Financial hardship', class: "radio inline" %>
-					 </div>
-					 <div class="controls" style="margin-top: 5px">
-						<%= f.radio_button :waiver_type, 'Institutional subscription', :disabled => true %>
-					  <%= label :waiver_type, 'Institutional subscription', :value => 'Institutional subscription', class: "radio inline" %>
-					 </div>
-					 <div id="institutions" class="controls" style="display:none; padding-left:36px; margin-top: 5px">
-						<%= f.select :subscriber, ['Brigham Young University', 'Cornell University', 'Humboldt-Universität zu Berlin', 'Indiana University Bloomington', 'Johns Hopkins University', 'Lafayette College', 'Massachusetts Institute of Technology', 'Murdoch University', 'Northwestern University', 'NYU Abu Dhabi', 'Princeton University', 'Rutgers University', 'St. Louis University', 'Syracuse University', 'Umeå University', 'University of Alabama', 'University of Birmingham', 'University of British Columbia', 'University of Edinburgh', 'University of Gothenburg', 'University of Leeds', 'University of Massachusetts, Amherst', 'University of Oxford', 'University of Puget Sound', 'University of Sussex', 'University of Toronto', 'University of Vermont', 'University of Virginia', 'University of Western Australia', 'Virginia Tech', 'Wellesley College', 'Western Michigan University', 'Wuhan University', 'Yale University', 'York University'], {}, {:disabled => true} %>
-					 </div>
-					</div>
 
-				<script>
-					$( document ).ready(function() {
-							var waiverinit = $("#submission_waiver").prop('checked')
-							if (waiverinit) {
-								$("#submission_waiver").prop('checked', false)
-								$("#submission_waiver_type_institutional_subscription").prop('checked', false)
-							}
-							$("#submission_waiver").click(function() {
-							var waivered = $("#submission_waiver").prop('checked')
-							if(waivered) {
-								$("#submission_donor_code").prop('disabled', true)
-								$("#submission_waiver_type_institutional_subscription").removeAttr("disabled")
-								$("#submission_waiver_type_financial_hardship").removeAttr("disabled")
-								$("#waiver_grounds").show()
-							} 
-							else {
-								$("#submission_donor_code").removeAttr("disabled")
-								$("#submission_waiver_type_institutional_subscription").prop('disabled', true)
-								$("#submission_waiver_type_financial_hardship").prop('disabled', true)
-								$("#waiver_grounds").hide()
-							}
-						});
-						$("#waiver_grounds").click(function() {
-							var subscribed = $("#submission_waiver_type_institutional_subscription").prop('checked')
-							if(subscribed) {
-								$("#institutions").show()
-								$("#submission_subscriber").removeAttr("disabled")
-							}
-							else {
-								$("#institutions").hide()
-								$("#submission_subscriber").prop('disabled', true)
-							}
-						});
-					});
-				</script> 
-			
 		<div class="alert" style="margin-top: 1em;">
 			Manuscripts must be <u>PDF files</u> and 
 				    <span class="wide-popover"><u>
