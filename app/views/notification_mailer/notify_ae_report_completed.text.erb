@@ -1,6 +1,6 @@
 Dear <%= @recipients_list %>,
 
-<%= @referee_assignment.referee.full_name %> has submitted a report for "<%= @submission.title %>".
+<%= @referee_assignment.referee.full_name %> has submitted a report for submission #<%= @submission.id %>, "<%= @submission.title %>".
 
 *Important change*: referee reports now become visible to the author automatically after seven days. Please review this report before then to make sure it is fit to be shared with the author.
 
