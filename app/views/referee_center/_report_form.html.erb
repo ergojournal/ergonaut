@@ -25,7 +25,7 @@
 		<div class="controls">
 			<%= f.text_area :comments_for_author,
 											size: "60x10",
-											placeholder: "Required unless recommending '#{ Decision::REJECT }'. Will be shared with other reviewers.",
+											placeholder: "Required unless recommending '#{ Decision::REJECT }'. Will be shared with other reviewers. Please delete all identifying information, including from the document properties, before uploading any attachment.",
 											value: @referee_assignment.comments_for_author %>
 			<div style="margin-top: 5px;">
 				Attachment (optional): <%= f.file_field :attachment_for_author %>
