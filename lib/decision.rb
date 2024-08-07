@@ -35,6 +35,8 @@ class Decision
   def Decision.disabled(submission)
     if submission.revision_number > 0
       [Decision::MAJOR_REVISIONS, Decision::MINOR_REVISIONS]
+    else
+      [Decision::MAJOR_REVISIONS]
     end
   end
 

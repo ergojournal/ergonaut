@@ -117,7 +117,8 @@
           <td>
             <%= select_tag  "submission[decision]",
                             options_for_select(Decision.all,
-																			selected: @submission.decision, 																			disabled: Decision.disabled(@submission)),
+																			selected: @submission.decision,
+																			disabled: Decision.disabled(@submission)),
                             style: "margin-bottom: 0px;" %>
           </td>
         </tr>

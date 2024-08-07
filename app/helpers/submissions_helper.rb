@@ -4,7 +4,7 @@ module SubmissionsHelper
     if symbol == :area_editor_comments_for_managing_editors
       "Confidential to the managing editors: a brief explanation of the rationale for the decision."
     elsif symbol == :area_editor_comments_for_author
-      "Will be shared with any referees. Required for major/minor revisions, optional otherwise."
+      "Will be shared with any referees. Required for minor revisions, optional otherwise."
     end
   end
 

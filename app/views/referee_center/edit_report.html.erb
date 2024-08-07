@@ -43,7 +43,8 @@
 				<div class="controls">
 					<%= select_tag "referee_assignment[recommendation]",
 												 options_for_select(Decision.all_recommendations,
-														selected: @referee_assignment.recommendation, 												disabled: Decision.disabled(@submission)) %>
+														selected: @referee_assignment.recommendation,
+														disabled: Decision.disabled(@submission)) %>
 				</div>
 			</div>
 
