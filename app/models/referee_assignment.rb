@@ -310,7 +310,7 @@ class RefereeAssignment < ActiveRecord::Base
       [attachment_for_editor, attachment_for_author].each do |upload|
         path = upload.current_path
         next unless path && File.extname(path).downcase == ".pdf"
-        `exiftool -all= -Title="PPQ Referee Attachment" #{path}`
+        `exiftool -all= -Title="Ergo Referee Attachment" #{path}`
       end
     end
 
