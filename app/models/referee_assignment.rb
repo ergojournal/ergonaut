@@ -48,6 +48,7 @@ class RefereeAssignment < ActiveRecord::Base
 
   after_initialize :set_defaults, if: :new_record?
   before_save :handle_before_save
+  after_save :clear_attachment_metadata
   before_create :handle_before_create
   after_create :handle_after_create
   around_update :send_emails
@@ -302,6 +303,14 @@ class RefereeAssignment < ActiveRecord::Base
     def handle_before_save
       if self.report_completed? && self.report_completed_changed?
         self.report_completed_at = Time.current
+      end
+    end
+
+    def clear_attachment_metadata
+      [attachment_for_editor, attachment_for_author].each do |upload|
+        path = upload.current_path
+        next unless path && File.extname(path).downcase == ".pdf"
+        `exiftool -all= -Title="PPQ Referee Attachment" #{path}`
       end
     end
 
