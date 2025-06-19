@@ -28,10 +28,10 @@
 				<div class="controls">
 					<%= f.text_area :comments_for_author,
 													size: "60x10",
-													placeholder: "Required unless recommending '#{ Decision::REJECT }'. Will be shared with other reviewers. If uploading a file, please remove all identifying information, including from the document properties.",
+													placeholder: "Required unless recommending '#{ Decision::REJECT }'.  If uploading an attachment, it must be in PDF format, since this enables us to automatically remove identifying information from the document metadata.",
 													value: @referee_assignment.comments_for_author %>
 					<div style="margin-top: 5px;">
-						Attachment (optional): <%= f.file_field :attachment_for_author %>
+						Attachment (optional; PDF only): <%= f.file_field :attachment_for_author %>
 					</div>
 				</div>
 			</div>
