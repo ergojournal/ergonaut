@@ -26,6 +26,8 @@
 #
 
 
+require 'open3'
+
 class Submission < ActiveRecord::Base
   include SubmissionStatusCheckers
   extend SubmissionFinders
@@ -96,7 +98,14 @@ class Submission < ActiveRecord::Base
   end
   
   def clear_manuscript_file_metadata
-    `exiftool -all= -Title="Ergo Submission ##{self.id}" #{File.join(Rails.root.to_s, self.manuscript_file.to_s)}`
+    path = File.join(Rails.root.to_s, self.manuscript_file.to_s)
+    _stdout, stderr, status = Open3.capture3(
+      'exiftool', '-all=', "-Title=Ergo Submission ##{self.id}", path
+    )
+    unless status.success?
+      Rails.logger.warn("exiftool failed for submission=#{self.id} path=#{path} exit=#{status.exitstatus} stderr=#{stderr.strip}")
+    end
+    status.success?
   end
   
   # queries

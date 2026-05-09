@@ -31,6 +31,8 @@
 #
 
 
+require 'open3'
+
 class RefereeAssignment < ActiveRecord::Base
   extend RefereeAssignmentReminders
 
@@ -310,7 +312,12 @@ class RefereeAssignment < ActiveRecord::Base
       [attachment_for_editor, attachment_for_author].each do |upload|
         path = upload.current_path
         next unless path && File.extname(path).downcase == ".pdf"
-        `exiftool -all= -Title="Ergo Referee Attachment" #{path}`
+        _stdout, stderr, status = Open3.capture3(
+          'exiftool', '-all=', '-Title=Ergo Referee Attachment', path
+        )
+        unless status.success?
+          Rails.logger.warn("exiftool failed for referee_assignment=#{self.id} path=#{path} exit=#{status.exitstatus} stderr=#{stderr.strip}")
+        end
       end
     end
 
