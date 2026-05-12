@@ -339,6 +339,97 @@ You don't need to redo any of the setup steps (Ruby, MySQL, gems).
 
 ---
 
+## Adding new environment variables to production
+
+Production env vars live in `/home/deployer/.env` on the DigitalOcean droplet
+(sourced by the unicorn init script and by cron). When you add a new one,
+**`cap deploy` alone will NOT make unicorn pick it up.** This is non-obvious
+and easy to miss — discovered when the Turnstile CAPTCHA rollout went live
+without rendering the widget on prod despite the env vars being added.
+
+### What happens by default (the trap)
+
+The deploy ends with `sudo bootup_god restart unicorn_ergonaut`, which sends
+god the `restart` command. god runs `service unicorn_ergonaut restart` for
+that watch — and the unicorn init script's `restart` case does a **USR2
+graceful reload**:
+
+```sh
+restart|reload)
+  sig USR2 && echo reloaded OK && exit 0
+  ...
+```
+
+A USR2 reload re-execs the unicorn master to pick up new code, but the new
+master process **inherits its environment from the old master**, which was
+inherited from god, which was started at boot (before your new env var
+existed). So new env vars never reach unicorn.
+
+You can confirm this on the droplet:
+
+```bash
+UPID=$(pgrep -f 'unicorn.*master' | head -1)
+echo -n "MY_NEW_VAR in unicorn env: "
+tr '\0' '\n' < /proc/$UPID/environ | grep -c '^MY_NEW_VAR='
+# 0 means it's not there
+```
+
+### The fix: god stop + start (NOT god restart)
+
+A hard `god stop` followed by `god start` makes god invoke its `w.start`
+(`service unicorn_ergonaut start`) — which hits the init script's **start**
+case, and the start case sources `~/.env` fresh:
+
+```sh
+CMD="cd $APP_ROOT; . /home/deployer/.env; bundle exec unicorn -D -c $APP_ROOT/config/unicorn.rb -E production"
+```
+
+From the droplet, as `deployer`:
+
+```bash
+sudo /home/deployer/.rvm/bin/bootup_god stop unicorn_ergonaut
+sleep 4
+sudo /home/deployer/.rvm/bin/bootup_god start unicorn_ergonaut
+```
+
+There's a ~5–15 sec window where the site is unreachable while unicorn is
+down. Pick a low-traffic time, or rate-limit nginx to return 503 during the
+restart if that matters.
+
+After the start, verify the new var is in unicorn's env (see snippet above).
+The count should be `1`.
+
+### Procedure for adding a new env var to production
+
+1. **Append to `/home/deployer/.env`** on the droplet. Use append (`>>`),
+   not overwrite — don't clobber `GMAIL_USER`, `GMAIL_PASSWORD`, etc.:
+   ```bash
+   ssh deployer@<droplet-ip>
+   cat >> ~/.env <<'EOF'
+   export MY_NEW_VAR="value"
+   EOF
+   ```
+2. **Hard-restart unicorn** via god stop+start (above).
+3. **Verify** the var is in unicorn's env (snippet above).
+4. **Test** the feature that depends on the var.
+
+### Why not just `cap deploy` and hope?
+
+`cap deploy` works for **code changes** because USR2 reload re-execs unicorn,
+which re-loads Rails (new application code). But the process *environment*
+isn't reset on USR2 — that's a UNIX thing, not a unicorn or god thing. So
+new env vars require a true process restart.
+
+### Related gotcha: god itself loses env if restarted
+
+If god is ever killed and restarted (e.g. system reboot), god takes its
+environment from however it was launched. If the launcher (e.g. `/etc/rc.local`
+or systemd unit) doesn't source `~/.env`, god comes up with the wrong env,
+and every unicorn it spawns will also have the wrong env. Verify the launcher
+sources `~/.env` before god starts.
+
+---
+
 ## What you must NOT do on staging
 
 These are not just style preferences — these would cause real harm if violated:
