@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20200830220820) do
+ActiveRecord::Schema.define(:version => 20260512030000) do
 
   create_table "area_editor_assignments", :force => true do |t|
     t.integer  "user_id"
@@ -129,11 +129,11 @@ ActiveRecord::Schema.define(:version => 20200830220820) do
   add_index "trigrams", ["owner_id", "owner_type"], :name => "index_by_owner"
 
   create_table "users", :force => true do |t|
-    t.string   "email"
+    t.string   "email",                  :limit => 191
     t.datetime "created_at",             :null => false
     t.datetime "updated_at",             :null => false
     t.string   "password_digest"
-    t.string   "remember_token"
+    t.string   "remember_token",         :limit => 191
     t.boolean  "managing_editor"
     t.boolean  "area_editor"
     t.boolean  "author"
