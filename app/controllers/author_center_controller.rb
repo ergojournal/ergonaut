@@ -9,6 +9,7 @@ class AuthorCenterController < ApplicationController
   end
   
   def create
+    return head(:bad_request) if params[:submission].blank?
     @submission = Submission.new(params[:submission].permit(:title, :donor_code, :waiver, :waiver_type, :subscriber, :fee_system, :area_id, :manuscript_file))
     @submission.author = current_user
     @submission.decision = Decision::NO_DECISION
