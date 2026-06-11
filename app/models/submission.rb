@@ -99,8 +99,11 @@ class Submission < ActiveRecord::Base
   
   def clear_manuscript_file_metadata
     path = File.join(Rails.root.to_s, self.manuscript_file.to_s)
+    title = "Ergo Submission ##{self.id}"
     _stdout, stderr, status = Open3.capture3(
-      'exiftool', '-all=', "-Title=Ergo Submission ##{self.id}", path
+      'exiftool', '-all=',
+      "-PDF:Title=#{title}", "-XMP-dc:Title=#{title}",
+      path
     )
     unless status.success?
       Rails.logger.warn("exiftool failed for submission=#{self.id} path=#{path} exit=#{status.exitstatus} stderr=#{stderr.strip}")
