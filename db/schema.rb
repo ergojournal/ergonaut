@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20260512030000) do
+ActiveRecord::Schema.define(:version => 20260710230000) do
 
   create_table "area_editor_assignments", :force => true do |t|
     t.integer  "user_id"
@@ -75,6 +75,8 @@ ActiveRecord::Schema.define(:version => 20260512030000) do
     t.string   "attachment_for_author"
     t.boolean  "hide_report_from_author"
   end
+
+  add_index "referee_assignments", ["submission_id", "report_completed"], :name => "index_ra_submission_id_report_completed"
 
   create_table "sent_emails", :force => true do |t|
     t.integer  "submission_id"
