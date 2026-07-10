@@ -428,32 +428,9 @@ class NotificationMailer < ActionMailer::Base
     end
 
     def cc_editors
-      cc_managing_editors_actions = [
-        'notify_ae_decision_approved',
-        'notify_ae_new_assignment',
-        'notify_ae_assignment_canceled',
-        'notify_ae_or_me_referee_request_declined',
-        'notify_ae_or_me_decline_comment_entered',
-        'notify_ae_report_completed',
-        'remind_ae_decision_based_on_external_reviews_overdue',
-        'remind_ae_internal_review_overdue',
-        'notify_ae_and_me_submission_withdrawn',
-        'notify_ae_enough_reports_complete',
-        'notify_ae_all_reports_complete',
-        'request_referee_report',
-        'remind_re_response_overdue',
-        'notify_ae_response_reminder_unanswered',
-        'confirm_assignment_agreed',
-        'remind_re_report_due_soon',
-        'remind_re_report_overdue',
-        'cancel_referee_assignment',
-        're_thank_you',
-        'notify_re_submission_withdrawn',
-        'notify_re_outcome',
-        'notify_au_decision_reached',
-        'confirm_au_submission_withdrawn'
-      ]
-
+      # Managing editors are no longer cc'd on every email: they're reachable via
+      # the journal's shared address (ergo.editors@gmail.com), which forwards to
+      # all of them, so cc'ing each ME individually only duplicated their inboxes.
       cc_area_editor_actions = [
         'notify_me_decision_needs_approval',
         'request_referee_report',
@@ -468,10 +445,6 @@ class NotificationMailer < ActionMailer::Base
       ]
 
       message.cc = Mail::AddressContainer.new('cc') unless message.cc.present?
-
-      if cc_managing_editors_actions.include? action_name
-        message.cc << mailto_string(managing_editors)
-      end
 
       if ((cc_area_editor_actions.include? action_name) && @area_editor)
         message.cc << mailto_string([@area_editor])
