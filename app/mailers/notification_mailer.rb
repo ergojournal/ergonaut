@@ -35,11 +35,11 @@ class NotificationMailer < ActionMailer::Base
 
   def notify_me_new_submission(submission)
     @submission = submission
-    managing_editors = User.where(managing_editor: true)
-    @recipients_list = name_list(managing_editors)
 
-    message = mail(to: mailto_string(managing_editors),
-                   cc: mailto_string([@submission.author]),
+    # Acknowledgment goes to the author; the managing editors are reached via the
+    # shared ergo.editors@gmail.com inbox rather than being listed individually.
+    message = mail(to: mailto_string([@submission.author]),
+                   cc: "ergo.editors@gmail.com",
                    subject: 'New Submission')
   end
 
@@ -428,9 +428,41 @@ class NotificationMailer < ActionMailer::Base
     end
 
     def cc_editors
-      # Managing editors are no longer cc'd on every email: they're reachable via
-      # the journal's shared address (ergo.editors@gmail.com), which forwards to
-      # all of them, so cc'ing each ME individually only duplicated their inboxes.
+      # Emails whose direct audience is an author, area editor, or referee, but
+      # that the managing editors want visibility on, are cc'd to the shared
+      # ergo.editors@gmail.com inbox (which reaches all MEs) rather than to every
+      # managing editor individually.
+      cc_shared_editors_actions = [
+        'notify_ae_decision_approved',
+        'notify_ae_new_assignment',
+        'notify_ae_assignment_canceled',
+        'notify_ae_or_me_referee_request_declined',
+        'notify_ae_or_me_decline_comment_entered',
+        'notify_ae_report_completed',
+        'remind_ae_decision_based_on_external_reviews_overdue',
+        'remind_ae_internal_review_overdue',
+        'notify_ae_enough_reports_complete',
+        'notify_ae_all_reports_complete',
+        'request_referee_report',
+        'remind_re_response_overdue',
+        'notify_ae_response_reminder_unanswered',
+        'confirm_assignment_agreed',
+        'remind_re_report_due_soon',
+        'remind_re_report_overdue',
+        'cancel_referee_assignment',
+        're_thank_you',
+        'notify_re_submission_withdrawn',
+        'notify_re_outcome',
+        'notify_au_decision_reached',
+        'confirm_au_submission_withdrawn'
+      ]
+
+      # The submission-withdrawn notification is a direct managing-editor
+      # notification, so it still goes to every managing editor individually.
+      cc_all_managing_editors_actions = [
+        'notify_ae_and_me_submission_withdrawn'
+      ]
+
       cc_area_editor_actions = [
         'notify_me_decision_needs_approval',
         'request_referee_report',
@@ -445,6 +477,14 @@ class NotificationMailer < ActionMailer::Base
       ]
 
       message.cc = Mail::AddressContainer.new('cc') unless message.cc.present?
+
+      if cc_shared_editors_actions.include? action_name
+        message.cc << "ergo.editors@gmail.com"
+      end
+
+      if cc_all_managing_editors_actions.include? action_name
+        message.cc << mailto_string(managing_editors)
+      end
 
       if ((cc_area_editor_actions.include? action_name) && @area_editor)
         message.cc << mailto_string([@area_editor])
