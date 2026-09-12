@@ -59,6 +59,14 @@ class UsersController < ApplicationController
       end
 
     else # new user creating own account
+      unless verify_turnstile
+        @user = User.new(params[:user].permit(:first_name, :middle_name, :last_name, :affiliation, :email))
+        @header = "Sign up"
+        @button_text = "Create my account"
+        flash.now[:error] = "Please complete the CAPTCHA challenge and try again."
+        render :new and return
+      end
+
       @user = User.find_by_email(params[:user][:email])
 
       if @user
@@ -125,6 +133,25 @@ class UsersController < ApplicationController
       else
         redirect_to security_breach_path
       end
+    end
+
+    def verify_turnstile
+      return true if ENV['TURNSTILE_SECRET_KEY'].blank?
+
+      token = params['cf-turnstile-response']
+      return false if token.blank?
+
+      require 'net/http'
+      require 'json'
+      uri = URI('https://challenges.cloudflare.com/turnstile/v0/siteverify')
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = true
+      req = Net::HTTP::Post.new(uri.request_uri)
+      req.set_form_data(secret: ENV['TURNSTILE_SECRET_KEY'], response: token, remoteip: request.remote_ip)
+      JSON.parse(http.request(req).body)['success'] == true
+    rescue => e
+      Rails.logger.error("Turnstile verification error: #{e.message}")
+      false
     end
 
     def permitted_params(params)

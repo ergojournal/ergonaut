@@ -83,6 +83,10 @@ end
 
 # Exception Notification Gem
 Ergonaut::Application.config.middleware.use ExceptionNotification::Rack,
+  ignore_exceptions: ['ActionView::MissingTemplate', 'EOFError'] + ExceptionNotifier.ignored_exceptions,
+  ignore_if: lambda { |env, exception|
+    exception.is_a?(ArgumentError) && exception.message.to_s.include?("invalid byte sequence")
+  },
   email: {
     email_prefix: "[EXCEPTION] ",
     sender_address: %{"Exception Notification Gem" <a.j.wilson@bham.ac.uk>},

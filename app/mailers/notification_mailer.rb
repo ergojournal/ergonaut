@@ -35,11 +35,11 @@ class NotificationMailer < ActionMailer::Base
 
   def notify_me_new_submission(submission)
     @submission = submission
-    managing_editors = User.where(managing_editor: true)
-    @recipients_list = name_list(managing_editors)
 
-    message = mail(to: mailto_string(managing_editors),
-                   cc: mailto_string([@submission.author]),
+    # Acknowledgment goes to the author; the managing editors are reached via the
+    # shared ergo.editors@gmail.com inbox rather than being listed individually.
+    message = mail(to: mailto_string([@submission.author]),
+                   cc: "ergo.editors@gmail.com",
                    subject: 'New Submission')
   end
 
@@ -428,7 +428,11 @@ class NotificationMailer < ActionMailer::Base
     end
 
     def cc_editors
-      cc_managing_editors_actions = [
+      # Emails whose direct audience is an author, area editor, or referee, but
+      # that the managing editors want visibility on, are cc'd to the shared
+      # ergo.editors@gmail.com inbox (which reaches all MEs) rather than to every
+      # managing editor individually.
+      cc_shared_editors_actions = [
         'notify_ae_decision_approved',
         'notify_ae_new_assignment',
         'notify_ae_assignment_canceled',
@@ -437,7 +441,6 @@ class NotificationMailer < ActionMailer::Base
         'notify_ae_report_completed',
         'remind_ae_decision_based_on_external_reviews_overdue',
         'remind_ae_internal_review_overdue',
-        'notify_ae_and_me_submission_withdrawn',
         'notify_ae_enough_reports_complete',
         'notify_ae_all_reports_complete',
         'request_referee_report',
@@ -452,6 +455,12 @@ class NotificationMailer < ActionMailer::Base
         'notify_re_outcome',
         'notify_au_decision_reached',
         'confirm_au_submission_withdrawn'
+      ]
+
+      # The submission-withdrawn notification is a direct managing-editor
+      # notification, so it still goes to every managing editor individually.
+      cc_all_managing_editors_actions = [
+        'notify_ae_and_me_submission_withdrawn'
       ]
 
       cc_area_editor_actions = [
@@ -469,7 +478,11 @@ class NotificationMailer < ActionMailer::Base
 
       message.cc = Mail::AddressContainer.new('cc') unless message.cc.present?
 
-      if cc_managing_editors_actions.include? action_name
+      if cc_shared_editors_actions.include? action_name
+        message.cc << "ergo.editors@gmail.com"
+      end
+
+      if cc_all_managing_editors_actions.include? action_name
         message.cc << mailto_string(managing_editors)
       end
 

@@ -82,6 +82,15 @@
 				</div>
 			<% end %>
 			
+			<% if !current_user && ENV['TURNSTILE_SITE_KEY'].present? %>
+				<div class="control-group">
+					<div class="controls">
+						<div class="cf-turnstile" data-sitekey="<%= ENV['TURNSTILE_SITE_KEY'] %>"></div>
+					</div>
+				</div>
+				<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+			<% end %>
+
 			<div class="control-group">
 				<div class="controls">
 					<%= link_to 'Cancel', :back, class: "btn" %>

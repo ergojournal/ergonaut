@@ -280,6 +280,11 @@ class StatisticsController < ApplicationController
     end
 
     def average_ttd(submissions, numerator_correction = 0, denominator_correction = 0)
+      # A submission can be decision_approved (so it matches `with_decision`) yet
+      # have no decision_entered_at -- e.g. an archived record approved while still
+      # "No Decision". Such records have no time-to-decision, and calling to_date on
+      # a nil decision_entered_at raises and 500s the whole statistics page. Skip them.
+      submissions = submissions.select { |s| s.decision_entered_at && s.created_at }
       total_days = submissions.inject(0) { |sum, s| sum + ttd(s) }
       total_days += numerator_correction.to_i
       if total_days > 0
